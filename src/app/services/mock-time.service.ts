@@ -1,9 +1,15 @@
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class MockTimeService {
+  private mockDate: Date = new Date();
+  constructor() {
+    this.mockDate.setHours(24, 15, 0);
+  }
 
-  constructor() { }
+  getCurrentTime(): Date {
+    return this.mockDate;
+  }
 }

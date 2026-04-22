@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { CLOCK_CONSTANTS as cc } from './clock.constants';
+// import { MockTimeService } from '../services/mock-time.service';
 import { TimeService } from '../services/time.service';
 
 @Component({
@@ -41,5 +42,22 @@ export class ClockComponent implements OnInit {
 
   constructor(private readonly timeService: TimeService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.updateClock();
+    setInterval(() => this.updateClock(), 1000);
+  }
+
+  public updateClock() {
+    const now = this.timeService.getCurrentTime();
+    this.hours =
+      (now.getHours() % 12) * cc.DEGREES_PER_HOUR +
+      now.getMinutes() * cc.MINUTE_ADJUSTMENT +
+      cc.OFFSET_ROTATION;
+    this.minutes =
+      now.getMinutes() * cc.DEGREES_PER_MINUTE_SECOND +
+      now.getSeconds() * cc.SECOND_ADJUSTMENT +
+      cc.OFFSET_ROTATION;
+    this.seconds =
+      now.getSeconds() * cc.DEGREES_PER_MINUTE_SECOND + cc.OFFSET_ROTATION;
+  }
 }
